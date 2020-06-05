@@ -42,7 +42,7 @@ public class ListaLeilaoActivity extends AppCompatActivity {
         console.propoe(new Lance(new Usuario("Marcos"), 470));
         console.propoe(new Lance(new Usuario("Joao"), 500));
         console.propoe(new Lance(new Usuario("Jose"), 900));
-        console.propoe(new Lance(new Usuario("Marcos Paulo"), 100));
+       // console.propoe(new Lance(new Usuario("Marcos Paulo"), 100));
 
         Leilao computador = new Leilao("Computador");
 

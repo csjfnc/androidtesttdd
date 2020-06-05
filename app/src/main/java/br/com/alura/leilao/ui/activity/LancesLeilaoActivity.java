@@ -8,6 +8,7 @@ import android.widget.TextView;
 import java.io.Serializable;
 
 import br.com.alura.leilao.R;
+import br.com.alura.leilao.formatter.FormatadorDeMoeda;
 import br.com.alura.leilao.model.Lance;
 import br.com.alura.leilao.model.Leilao;
 
@@ -24,16 +25,18 @@ public class LancesLeilaoActivity extends AppCompatActivity {
         Intent dadosRecebidos = getIntent();
         mapeiaCOmponentesView();
 
+        FormatadorDeMoeda formatadorDeMoeda = new FormatadorDeMoeda();
+
         if(dadosRecebidos.hasExtra("leilao")){
             Leilao leilao = (Leilao) dadosRecebidos.getSerializableExtra("leilao");
             TextView descricao = findViewById(R.id.lances_leilao_descricao);
             descricao.setText(leilao.getDescricao());
-            lances_leilao_maior_lance.setText(String.valueOf(leilao.getMaiorLance()));
-            lances_leilao_menor_lance.setText(String.valueOf(leilao.getMenorLance()));
+            lances_leilao_maior_lance.setText(String.valueOf(formatadorDeMoeda.formata(leilao.getMaiorLance())));
+            lances_leilao_menor_lance.setText(String.valueOf(formatadorDeMoeda.formata(leilao.getMenorLance())));
 
             StringBuilder sb = new StringBuilder();
             for(Lance lance : leilao.getTresMaioresLances()){
-                sb.append(lance.getValor() + "\n");
+                sb.append(formatadorDeMoeda.formata(lance.getValor()) + "\n");
             }
             lances_leilao_maiores_lances.setText(sb.toString());
 
