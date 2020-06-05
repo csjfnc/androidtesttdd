@@ -4,6 +4,9 @@ import org.junit.Test;
 
 import java.util.List;
 
+import br.com.alura.leilao.exceptions.LanceMenorQueUltimoLanceException;
+import br.com.alura.leilao.exceptions.LanceSeguidoDoMesmoUsuarioException;
+import br.com.alura.leilao.exceptions.UsuarioJaDeuCincoLancesException;
 import br.com.alura.leilao.model.Lance;
 import br.com.alura.leilao.model.Leilao;
 import br.com.alura.leilao.model.Usuario;
@@ -103,10 +106,13 @@ public class ExampleUnitTest {
         assertEquals(0.0, menorLanceDevolvido, 000.1);
     }
 
-    @Test
+    @Test(expected = LanceMenorQueUltimoLanceException.class)
     public void naoDeve_AdicionarLance_QuandoForMenorQueOMaiorLance(){
 
         CONSOLE.propoe(new Lance(FRANCISCO, 500.0));
+        CONSOLE.propoe(new Lance(new Usuario("Marcos"), 400.0));
+
+       /*
         try{
             CONSOLE.propoe(new Lance(new Usuario("Marcos"), 00.0));
             fail("Era esperado uma exception");
@@ -114,20 +120,25 @@ public class ExampleUnitTest {
             assertEquals("Lance Menor que o ultimo lance", e.getMessage());
 
         }
+        */
     }
 
-    @Test
+    @Test(expected = LanceSeguidoDoMesmoUsuarioException.class)
     public void naoDeve_AdicionarLance_QuandoForOMesmoUsuarioDoUltimoLance(){
         CONSOLE.propoe(new Lance(FRANCISCO, 500));
-        try {
+        CONSOLE.propoe(new Lance(new Usuario("Francisco"), 600));
+
+        //Primeira forma de testar com exceptions
+       /* try {
             CONSOLE.propoe(new Lance(new Usuario("Francisco"), 600));
             fail();
         }catch (RuntimeException e){
             assertEquals("Mesmo usuario do ultimo lance", e.getMessage());
         }
+        */
     }
 
-    @Test
+    @Test(expected = UsuarioJaDeuCincoLancesException.class)
     public void naoDeve_AdicionarLance_QuandoUsuarioDerCincoLances(){
 
         CONSOLE.propoe(new Lance(new Usuario("Marcos"), 100));
@@ -140,12 +151,16 @@ public class ExampleUnitTest {
         CONSOLE.propoe(new Lance(new Usuario("Francisco"), 800));
         CONSOLE.propoe(new Lance(new Usuario("Marcos"), 900));
         CONSOLE.propoe(new Lance(new Usuario("Francisco"), 1000));
+        CONSOLE.propoe(new Lance(new Usuario("Marcos"), 1100));
 
+        //Primeria forma de usar exceptions
+        /*
         try {
             CONSOLE.propoe(new Lance(new Usuario("Marcos"), 1100));
             fail("Era esperado uma excessao");
         }catch (RuntimeException ex){
             assertEquals("Usuario deu cinco lances", ex.getMessage());
         }
+        */
     }
 }
